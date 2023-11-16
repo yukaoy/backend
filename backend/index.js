@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const userSchema = require('./src/userSchema');
 const User = mongoose.model('user', userSchema);
-const connectionString = 'mongodb+srv://ya15:M6TbOmjR95aJPel1@cluster0.n2ntn.mongodb.net/?retryWrites=true&w=majority';
+const connectionString = 'mongodb+srv://ya15://@cluster0.n2ntn.mongodb.net/?retryWrites=true&w=majority'; //removed password
 
 // const hello = (req, res) => res.send({ hello: 'world' });
 

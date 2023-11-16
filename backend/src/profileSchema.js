@@ -5,6 +5,10 @@ const profileSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Username is required']
   },
+  headline: {
+    type: String,
+    required: [true, 'Headline is required']
+  },
   email: {
     type: String,
     required: [true, 'Email is required']

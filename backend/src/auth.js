@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const md5 = require('md5');
 const User = mongoose.model("user", require('./userSchema'));
+const Profile = mongoose.model("profile", require('./profileSchema'));
 
 let sessionUser = {};
 let cookieKey = "sid";
@@ -68,13 +69,19 @@ function login(req, res) { //POST /login
 }
 
 function logout(req, res) { //PUT /logout
+    // let sid = req.cookies[cookieKey];
+    // if (sid) {
+    //     User.findOneAndDelete({ sid: sid }, (err) => {
+    //         if (err) {
+    //             return res.sendStatus(500);
+    //         }
+    //     });
+    //     delete sessionUser[sid];
+    //     res.clearCookie(cookieKey);
+    // }
+    // res.send({ result: 'Logged out successfully' });
     let sid = req.cookies[cookieKey];
     if (sid) {
-        User.findOneAndDelete({ sid: sid }, (err) => {
-            if (err) {
-                return res.sendStatus(500);
-            }
-        });
         delete sessionUser[sid];
         res.clearCookie(cookieKey);
     }
@@ -93,6 +100,7 @@ function register(req, res) { //POST /register
     let salt = username + new Date().getTime();
     let hash = md5(salt + password);
 
+    // Make a new user for this user
     let newUser = new User({
         username: username,
         hash: hash,
@@ -106,6 +114,30 @@ function register(req, res) { //POST /register
         }
         userObjs[username] = { username: username, salt: salt, hash: hash };
 
+        let msg = { username: username, result: 'success' };
+        res.send(msg);
+    }); 
+
+    // Make a new profile for this user
+    let email = req.body.email;
+    let zipcode = req.body.zipcode;
+    let avatar = req.body.avatar;
+    let phone = req.body.phone;
+    let dob = req.body.dob;
+
+    let newProfile = new Profile({
+        username: username,
+        email: email,
+        zipcode: zipcode,
+        avatar: avatar,
+        phone: phone,
+        dob: dob
+    })
+
+    newProfile.save((err) => {
+        if (err) {
+            return res.sendStatus(500);
+        }
         let msg = { username: username, result: 'success' };
         res.send(msg);
     }); 

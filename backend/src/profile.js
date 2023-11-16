@@ -14,15 +14,6 @@ let profiles = {
 
 function getProfileAttribute(req, res, attribute) {
     const username = req.params.user ? req.params.user : req.username;
-    // const user = profiles[username];
-    // if (user && user[attribute]) {
-    //     let response = { username: username };
-    //     response[attribute] = user[attribute];
-    //     res.send(response);
-    // } else {
-    //     res.status(404).send({ error: 'User or attribute not found' });
-    // }
-
     const user = Profile.findOne({ username });
     if (user && user[attribute]) {
         let response = { username };
@@ -35,13 +26,6 @@ function getProfileAttribute(req, res, attribute) {
 
 function updateProfileAttribute(req, res, attribute) {
     const username = req.params.user;
-    // const user = profiles[username];
-    // if (user) {
-    //     user[attribute] = req.body[attribute];
-    //     res.send({ username: username, [attribute]: user[attribute] });
-    // } else {
-    //     res.status(404).send({ error: 'User not found' });
-    // }
     let user = Profile.findOne({ username });
     if (user) {
         user[attribute] = req.body[attribute];

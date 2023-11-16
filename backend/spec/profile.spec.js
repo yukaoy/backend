@@ -8,6 +8,9 @@ const url = (path) => `http://localhost:3000${path}`;
 let cookie;
 
 describe("Validate Profile functionality", () => {
+
+  //QUESTION: do I need to add a beforeEach and POST register first?
+  
   it("should return headline for logged in user", (done) => {
     fetch(url("/headline"), {
       method: "GET",

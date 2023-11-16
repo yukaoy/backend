@@ -10,6 +10,7 @@ let articles;
 
 describe("Validate Article functionality", () => {
   beforeEach(async () => {
+    // QUESTION, should I register?
     // login with test user
     let testUser = {"username": "RDesRoches", "password": "123"};
         
@@ -42,9 +43,9 @@ describe("Validate Article functionality", () => {
   });
 
   afterEach(async () => {
-    // delete the article created in beforeEach
+    // QUESTION: do I need to delete the article created in beforeEach
     await fetch(url('/articles/3'), {
-      method: "DELETE",
+      method: "DELETE", //wait can you do this
       headers: {
         "Content-Type": "application/json",
         Cookie: cookie,
@@ -54,28 +55,28 @@ describe("Validate Article functionality", () => {
 
   it("should give me articles of logged in user", async () => {
     expect(articles.length).toBe(1);
-    expect(articles.id).toBe(3);
-    expect(articles.author).toBe("RDesRoches");
-    expect(articles.body).toBe("A new post");
+    expect(articles[0].id).toBe(3); //QUESTION articles.id or articles[0].id?
+    expect(articles[0].author).toBe("RDesRoches");
+    expect(articles[0].body).toBe("A new post");
   });
 
   it("should add a new article and return the updated list of articles", async () => {
-    const newArticle = { author: "RDesRoches", body: "Another new post" };
+    const anotherArticle = { author: "RDesRoches", body: "Another new post" };
 
     const addResponse = await fetch(url("/article"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newArticle),
+      body: JSON.stringify(anotherArticle),
     });
 
     const updatedArticles = await addResponse.json();
     expect(updatedArticles.length).toBe(articles.length + 1);
     const addedArticle = updatedArticles.find(
       (article) =>
-        article.author === newArticle.author && article.body === newArticle.body
+        article.author === anotherArticle.author && article.body === anotherArticle.body
     );
     expect(addedArticle).toBeTruthy();
-    expect(addedArticle.author).toBe("NewAuthor");
+    expect(addedArticle.author).toBe("RDesRoches");
     expect(addedArticle.body).toBe("Another new post");
   });
 
